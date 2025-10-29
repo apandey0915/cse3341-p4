@@ -7,33 +7,40 @@ class Procedure {
 	
 	void parse() {
 		Parser.expectedToken(Core.PROCEDURE); Parser.scanner.nextToken();
-
-		id = new Id(); id.parse();           // consumes ID
-
+		id = new Id(); 
+		id.parse();
 		Parser.expectedToken(Core.IS); Parser.scanner.nextToken();
 
-		// Only parse DeclSeq if the next token starts a decl (int/obj or nested proc)
 		Core t = Parser.scanner.currentToken();
 		if (t == Core.INTEGER || t == Core.OBJECT || t == Core.PROCEDURE) {
 			ds = new DeclSeq();
 			ds.parse();
 		}
 
-		Parser.expectedToken(Core.BEGIN); Parser.scanner.nextToken();
-
-		ss = new StmtSeq(); ss.parse();
-
-		Parser.expectedToken(Core.END); Parser.scanner.nextToken();
+		Parser.expectedToken(Core.BEGIN); 
+		Parser.scanner.nextToken();
+		ss = new StmtSeq(); 
+		ss.parse();
+		Parser.expectedToken(Core.END); 
+		Parser.scanner.nextToken();
 	}
 	
 	void print(int indent) {
-		for (int i=0;i<indent;i++) System.out.print("\t");
+		for (int i = 0; i<indent; i++) {
+			System.out.print("\t");
+		}
 		System.out.println("procedure " + id.getId() + " is");
-		if (ds != null) ds.print(indent+1);
-		for (int i=0;i<indent;i++) System.out.print("\t");
+		if (ds != null) {
+			ds.print(indent + 1);
+		}
+		for (int i = 0; i<indent; i++) {
+			System.out.print("\t");
+		}
 		System.out.println("begin");
-		ss.print(indent+1);
-		for (int i=0;i<indent;i++) System.out.print("\t");
+		ss.print(indent + 1);
+		for (int i = 0; i<indent; i++) {
+			System.out.print("\t");
+		}
 		System.out.println("end");
 	}
 	

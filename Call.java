@@ -5,20 +5,23 @@ class Call implements Stmt {
     ActualList actuals;
 
     public void parse() {
-        Parser.scanner.nextToken(); // consume BEGIN
+        Parser.scanner.nextToken();
 
         Parser.expectedToken(Core.ID);
-        name = Parser.scanner.getId(); Parser.scanner.nextToken();
-
-        Parser.expectedToken(Core.LPAREN); Parser.scanner.nextToken();
-        actuals = new ActualList(); actuals.parse();
-        Parser.expectedToken(Core.RPAREN); Parser.scanner.nextToken();
-
-        Parser.expectedToken(Core.SEMICOLON); Parser.scanner.nextToken();
+        name = Parser.scanner.getId(); 
+        Parser.scanner.nextToken();
+        Parser.expectedToken(Core.LPAREN); 
+        Parser.scanner.nextToken();
+        actuals = new ActualList(); 
+        actuals.parse();
+        Parser.expectedToken(Core.RPAREN); 
+        Parser.scanner.nextToken();
+        Parser.expectedToken(Core.SEMICOLON); 
+        Parser.scanner.nextToken();
     }
 
     public void print(int indent) {
-        for (int i=0;i<indent;i++) System.out.print("\t");
+        for (int i = 0; i<indent; i++) System.out.print("\t");
         System.out.print("begin " + name + "("); actuals.print(); System.out.println(");");
     }
 
@@ -33,9 +36,8 @@ class Call implements Stmt {
             System.exit(0);
         }
 
-        // 1) Capture caller refs BEFORE switching frames (so we can share safely)
         ArrayList<Memory.Variable> actualRefs = new ArrayList<>();
-        for (int i = 0; i < actuals.size(); i++) {
+        for (int i = 0; i<actuals.size(); i++) {
             String a = actuals.get(i).getId();
             Memory.Variable v = Memory.refOf(a);
             if (v == null) {
@@ -49,22 +51,20 @@ class Call implements Stmt {
             actualRefs.add(v);
         }
 
-        // 2) New call frame + outer scope
         Memory.pushFrame();
         Memory.pushScope();
 
-        // 3) Declare formals and alias to captured caller refs (call-by-sharing)
         for (int i = 0; i < callee.formals.size(); i++) {
             String f = callee.formals.get(i).getId();
             Memory.declareObject(f);
             Memory.aliasToRef(f, actualRefs.get(i));
         }
 
-        // 4) Callee locals then body
-        if (callee.ds != null) callee.ds.execute();
+        if (callee.ds != null) {
+            callee.ds.execute();
+        }
         callee.body.execute();
 
-        // 5) Unwind
         Memory.popScope();
         Memory.popFrame();
     }

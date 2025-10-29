@@ -15,7 +15,7 @@ class DeclSeq {
         if (Parser.scanner.currentToken() == Core.INTEGER || Parser.scanner.currentToken() == Core.OBJECT) {
             decl = new Decl();
             decl.parse();
-        } else { // PROCEDURE
+        } else {
             pdecl = new ProcDecl();
             pdecl.parse();
         }
@@ -35,6 +35,5 @@ class DeclSeq {
     void execute() {
         if (decl != null) decl.execute();
         if (ds != null) ds.execute();
-        // pdecl is compile-time only (registered in procTable)
     }
 }

@@ -23,7 +23,6 @@ class Parser {
 		return t == Core.INTEGER || t == Core.OBJECT;
 	}
 
-	// add inside Parser class
 	static boolean startsAnyDecl() {
 		Core t = scanner.currentToken();
 		return t == Core.INTEGER || t == Core.OBJECT || t == Core.PROCEDURE;

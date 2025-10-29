@@ -18,7 +18,6 @@ class Memory {
 	public static HashMap<String, Variable> global;
 	public static Stack<HashMap<String, Variable>> local;
 
-	// NEW: stack of call frames, each frame owns its own 'local' stack
 	public static Stack<Stack<HashMap<String, Variable>>> frames;
 	
 	// Helper methods to manage memory
@@ -46,7 +45,6 @@ class Memory {
 		local.pop();
 	}
 
-	// NEW: call-frame management (used by procedure calls)
 	public static void pushFrame() {
 		frames.push(local);
 		local = new Stack<HashMap<String, Variable>>();
@@ -132,11 +130,9 @@ class Memory {
 		v1.defaultKey = v2.defaultKey;
 	}
 
-	// NEW: get a direct ref (used to capture caller actuals before switching frames)
 	public static Variable refOf(String id) {
 		return getLocalOrGlobal(id);
 	}
-	// NEW: alias a name in the current frame to an existing Variable's object storage
 	public static void aliasToRef(String lhs, Variable rhs) {
 		Variable v1 = getLocalOrGlobal(lhs);
 		v1.mapVal = rhs.mapVal;
