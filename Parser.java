@@ -4,6 +4,8 @@ class Parser {
 	//scanner is stored here as a static field so it is avaiable to the parse method
 	public static CoreScanner scanner;
 	
+	static Map<String, ProcDecl> procTable = new HashMap<>();
+	
 	//helper method for handling error messages, used by the parse methods
 	static void expectedToken(Core expected) {
 		if (scanner.currentToken() != expected) {
@@ -12,4 +14,24 @@ class Parser {
 		}
 	}
 
+	static void expected(Core expected) { 
+		expectedToken(expected); 
+	}
+
+	static boolean startsVarDecl() {
+		Core t = scanner.currentToken();
+		return t == Core.INTEGER || t == Core.OBJECT;
+	}
+
+	// add inside Parser class
+	static boolean startsAnyDecl() {
+		Core t = scanner.currentToken();
+		return t == Core.INTEGER || t == Core.OBJECT || t == Core.PROCEDURE;
+	}
+	
+	static boolean startsDecl() {
+		return startsVarDecl(); 
+	}
+
+	
 }

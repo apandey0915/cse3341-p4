@@ -13,8 +13,10 @@ class StmtSeq {
 			stmt = new If();
 		} else if (Parser.scanner.currentToken() == Core.FOR) {
 			stmt = new Loop();
-		}  else if (Parser.scanner.currentToken() == Core.INTEGER || Parser.scanner.currentToken() == Core.OBJECT) {
+		} else if (Parser.scanner.currentToken() == Core.INTEGER || Parser.scanner.currentToken() == Core.OBJECT) {
 			stmt = new Decl();
+		} else if (Parser.scanner.currentToken() == Core.BEGIN) {
+			stmt = new Call();
 		} else {
 			System.out.println("ERROR: Bad start to statement: " + Parser.scanner.currentToken());
 			System.exit(0);
